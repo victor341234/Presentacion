@@ -160,7 +160,7 @@
             // BtnEliminar
             // 
             this.BtnEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnEliminar.Location = new System.Drawing.Point(645, 157);
+            this.BtnEliminar.Location = new System.Drawing.Point(645, 214);
             this.BtnEliminar.Name = "BtnEliminar";
             this.BtnEliminar.Size = new System.Drawing.Size(203, 49);
             this.BtnEliminar.TabIndex = 15;
