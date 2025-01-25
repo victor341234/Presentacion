@@ -406,65 +406,111 @@ namespace EquipoDinamita
 
             // ***************************************************************************************************************************
 
-            // se llama al metodo para generar pedidos
+            // AKI Recuperando el numero de stock pa ver si alcamsa mas adelante usaremos este mismo metodo para ver cuantas quedan desues de hacer el descuento--------
             int ValorStockPantalla = db.NumeroUnidadesDePantalla(idPantalla);
             int ValorStockTablilla = db.NumeroUnidadesDeTablilla(idTablilla);
             int ValorStockCarcasa = db.NumeroUnidadesDeCarcasa(idCarcasa);
             int ValorStockBotones = db.NumeroUnidadesDeBotones(idBotones);
-            // ************************************************************************************
 
 
+            if (ValorStockPantalla >= NumeroUnidades) // si tenemos suficientes
+            {
+                if (ValorStockTablilla >= NumeroUnidades)
+                {
+                    if (ValorStockCarcasa >= NumeroUnidades)
+                    {
+                        if (ValorStockBotones >= NumeroUnidades)
+                        {
+                            if (db.GenerarPedido(nombrePedido, nombreEstereo, NumeroUnidades, idPantalla, idTablilla, idCarcasa, idBotones))//si se logra llamo a los metodos alterar´para descontar de los stocks
+                            {
+                                db.AlterarStockPantallaNegativo(idPantalla, NumeroUnidades);
+                                db.AlterarStockTablillaNegativo(idTablilla, NumeroUnidades);
+                                db.AlterarStockCarcasasNegativo(idCarcasa, NumeroUnidades);
+                                db.AlterarStockBotonesNegativo(idBotones, NumeroUnidades);
+                                MessageBox.Show("Pedido Generado Correctamente ");
+                                LimpiarTexBoxIDS();
 
+                                int ValorStockPantall = db.NumeroUnidadesDePantalla(idPantalla);// vuelvo a verificar el numero de pantallas para ver cuantas nos quedan
+                                int ValorStockTablill = db.NumeroUnidadesDeTablilla(idTablilla);
+                                int ValorStockCarcas = db.NumeroUnidadesDeCarcasa(idCarcasa);
+                                int ValorStockBotone = db.NumeroUnidadesDeBotones(idBotones); 
 
-            if (ValorStockPantalla > NumeroUnidades)
+                                if (ValorStockPantall < 300)// condicion de limite permitido antes de avisar que ya ocupamos encargar mas 
+                                {
+                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                        $"El inventario de pantallas esta por terminarse. " +
+                                        $"Stock actual: {ValorStockPantall}. " + // esta es la variable mas actualisada del stoc
+                                        $"Se requiere adquirir más material.");
+                                    MessageBox.Show("Alerta de inventario. Se ha enviado un correo al área de compras.");
+                                }
+                                if (ValorStockTablill < 300)
+                                {
+                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                    $"El inventario de Tablillas esta por terminarse. " +
+                                    $"Stock actual: {ValorStockTablill}. " + // esta es la variable mas actualisada del stoc
+                                    $"Se requiere adquirir más material.");
+                                    MessageBox.Show("Alerta de inventario. Se ha enviado un correo al área de compras.");
+                                }
+                                if (ValorStockCarcas < 300)
+                                {
+                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                    $"El inventario de Carcasas esta por terminarse. " +
+                                    $"Stock actual: {ValorStockCarcas}. " + // esta es la variable mas actualisada del stoc
+                                    $"Se requiere adquirir más material.");
+                                    MessageBox.Show("Alerta de inventario. Se ha enviado un correo al área de compras.");
+                                }
+                                if (ValorStockBotone < 300)
+                                {
+                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                    $"El inventario de Botones esta por terminarse. " +
+                                    $"Stock actual: {ValorStockBotone}. " + // esta es la variable mas actualisada del stoc
+                                    $"Se requiere adquirir más material.");
+                                    MessageBox.Show("Alerta de inventario. Se ha enviado un correo al área de compras.");
+                                }
+                                dataGridView1.DataSource = db.MostrarEstereo();
+                            }
+                        }
+                        else
+                        {
+                            EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                            $"El inventario de botones es insuficiente." +
+                            $" Stock actual: {ValorStockBotones}. " +
+                            $"Se requiere adquirir más material");
+                            MessageBox.Show("El inventario de botones es insuficiente. Se ha enviado una notificacion al área de compras.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                        $"El inventario de carcasas es insuficiente. " +
+                        $"Stock actual: {ValorStockCarcasa}." +
+                        $" Se requiere adquirir más material.");
+                        MessageBox.Show("El inventario de carcasas es insuficiente. Se ha enviado una notificacion al área de compras.");
+                        return;
+                    }
+                }
+                else
+                {
+                    EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                    $"El inventario de tablillas es insuficiente." +
+                    $" Stock actual: {ValorStockTablilla}." +
+                    $" Se requiere adquirir más material.");
+                    MessageBox.Show("El inventario de tablillas es insuficiente. Se ha enviado una notificacion al área de compras.");
+                    return;
+                }
+
+            }else// en caso de que el inventario sea menor al que se requiere o diferente del numero que se requiere
             {
                 EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
                 $"El inventario de pantallas es insuficiente. " +
                 $"Stock actual: {ValorStockPantalla}. " +
                 $"Se requiere adquirir más material.");
-                MessageBox.Show("El inventario de pantallas es insuficiente. Se ha enviado un correo al área de compras.");
-                return;
-            }
-            if (ValorStockTablilla > NumeroUnidades)
-            {
-                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
-                $"El inventario de tablillas es insuficiente." +
-                $" Stock actual: {ValorStockTablilla}." +
-                $" Se requiere adquirir más material.");
-                MessageBox.Show("El inventario de tablillas es insuficiente. Se ha enviado un correo al área de compras.");
-                return;
-            }
-            if (ValorStockCarcasa > NumeroUnidades)
-            {
-                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
-                $"El inventario de carcasas es insuficiente. " +
-                $"Stock actual: {ValorStockCarcasa}." +
-                $" Se requiere adquirir más material.");
-                MessageBox.Show("El inventario de carcasas es insuficiente. Se ha enviado un correo al área de compras.");
+
+                MessageBox.Show("El inventario de pantallas es insuficiente. Se ha enviado una notificacion al área de compras.");
                 return;
             }
 
-            if (ValorStockBotones > NumeroUnidades)
-            {
-                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
-                $"El inventario de botones es insuficiente." +
-                $" Stock actual: {ValorStockBotones}. " +
-                $"Se requiere adquirir más material");
-                MessageBox.Show("El inventario de botones es insuficiente. Se ha enviado un correo al área de compras.");
-                return;
-            }
-            if (db.GenerarPedido(nombrePedido, nombreEstereo, NumeroUnidades, idPantalla, idTablilla, idCarcasa, idBotones))
-            {
-                db.AlterarStockPantallaNegativo(idPantalla, NumeroUnidades);
-                db.AlterarStockTablillaNegativo(idTablilla, NumeroUnidades);
-                db.AlterarStockCarcasasNegativo(idCarcasa, NumeroUnidades);
-                db.AlterarStockBotonesNegativo(idBotones, NumeroUnidades);
-
-                MessageBox.Show("Pedido Generado Correctamente ");
-                LimpiarTexBoxIDS();
-
-
-            }
         }
 
         // Método para enviar correos
@@ -496,7 +542,7 @@ namespace EquipoDinamita
                 smtpClient.Send(mensaje);
 
                 // Confirmación
-                MessageBox.Show("Correo enviado correctamente.");
+                // quite tu mesage de confirmacion ya que cuando se envia el correo ahi mismo se pone el mensaje para que no se envie el mismo para todos
             }
             catch (Exception ex)
             {
@@ -507,5 +553,9 @@ namespace EquipoDinamita
         
         }
 
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
     }
 }
