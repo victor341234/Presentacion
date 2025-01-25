@@ -19,7 +19,7 @@ namespace EquipoDinamita
 
         public static MySqlConnection crearconexion()
         {
-            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=Di4n4ran;";
+            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=root;";
             return new MySqlConnection(cadenaConexion);
         }
         // ***************************VALIDACIONES NOMBRE**************************************
@@ -233,7 +233,7 @@ namespace EquipoDinamita
 
 
         //-------------------------------------------------------------------------------------------------------
-        // *****************************OBTENEr datos para DATAGRIDVIEWS y mostrar ******************************************
+        // *****************************OBTENEr datos para DATAGData.MySqlClient.MySqlException: 'Authentication to host 'localhost' for user 'root' using method 'caching_sha2_password' failed with message: Access denied for user 'root'@'localhost' (using password: YES)'RIDVIEWS y mostrar ******************************************
         public DataTable MostrarPantallas()
         {
             string query = "SELECT * FROM Pantallas";
@@ -248,10 +248,10 @@ namespace EquipoDinamita
                     adp.Fill(dataTable);
                 }
             }
-            catch (Exception )
+            catch (Exception x)
             {
 
-                throw ;
+                throw x;
             }
             return dataTable;
         }
