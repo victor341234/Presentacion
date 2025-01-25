@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Mail;
+using System.Net;
+
 
 namespace EquipoDinamita
 {
@@ -16,7 +19,7 @@ namespace EquipoDinamita
 
         public static MySqlConnection crearconexion()
         {
-            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=root;";
+            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=Di4n4ran;";
             return new MySqlConnection(cadenaConexion);
         }
         // ***************************VALIDACIONES NOMBRE**************************************

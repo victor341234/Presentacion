@@ -6,6 +6,8 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -129,7 +131,7 @@ namespace EquipoDinamita
                 else
                 {
                     // en caso de que exista logica(validacion metodos)
-                    db.AlterarStockPantallaPositivo(nombre,stock_cantidad);
+                    db.AlterarStockPantallaPositivo(nombre, stock_cantidad);
                     dataGridView1.DataSource = db.MostrarPantallas();
                     LimpiarTextBox();
                     MessageBox.Show("Stock agregado con exito");
@@ -156,7 +158,7 @@ namespace EquipoDinamita
                     dataGridView1.DataSource = db.MostrarTablillas();
                     LimpiarTextBox();
                 }
-                else 
+                else
                 {
                     // -dkjsncpidsncsdnpcinsfmdkkkkkkkkkkcmmmmmpsdoooooooooooooo
                     db.AlterarStockTablillaPositivo(nombre, stock_cantidad);
@@ -186,7 +188,7 @@ namespace EquipoDinamita
                     dataGridView1.DataSource = db.MostrarCarcasas();
                     LimpiarTextBox();
                 }
-                else 
+                else
                 {
                     // -dkjsncpidsncsdnpcinsfmdkkkkkkkkkkcmmmmmpsdoooooooooooooo
                     db.AlterarStockCarcasaPositivo(nombre, stock_cantidad);
@@ -216,7 +218,7 @@ namespace EquipoDinamita
                     dataGridView1.DataSource = db.MostrarBotones();
                     LimpiarTextBox();
                 }
-                else 
+                else
                 {
                     // -dkjsncpidsncsdnpcinsfmdkkkkkkkkkkcmmmmmpsdoooooooooooooo
                     db.AlterarStockBotonesPositivo(nombre, stock_cantidad);
@@ -227,7 +229,7 @@ namespace EquipoDinamita
             }
         }
 
-         // los siguientes de editar y eliminar siguen el mismo proceso
+        // los siguientes de editar y eliminar siguen el mismo proceso
         private void BtnEditar_Click(object sender, EventArgs e)
         {
             string identificador = labelProducto.Text.Trim();
@@ -247,7 +249,7 @@ namespace EquipoDinamita
                     dataGridView1.DataSource = db.MostrarPantallas();
                     LimpiarTextBox();
                 }
-                else { MessageBox.Show("El 'Id' ingresado no existe\nintente de nuevo");return; }
+                else { MessageBox.Show("El 'Id' ingresado no existe\nintente de nuevo"); return; }
 
             }
 
@@ -269,7 +271,7 @@ namespace EquipoDinamita
 
             }
 
-            else if (identificador.Equals("Carcasas")) 
+            else if (identificador.Equals("Carcasas"))
             {
                 string Id = TxbID.Text.Trim();
                 if (!int.TryParse(Id, out int Id_Producto)) { MessageBox.Show("Ingrese 'Id' valido\ndel producto a editar"); return; }
@@ -287,7 +289,7 @@ namespace EquipoDinamita
                 else { MessageBox.Show("El 'Id' ingresado no existe\nintente de nuevo"); return; }
             }
 
-            else if (identificador.Equals("Botones")) 
+            else if (identificador.Equals("Botones"))
             {
                 string Id = TxbID.Text.Trim();
                 if (!int.TryParse(Id, out int Id_Producto)) { MessageBox.Show("Ingrese 'Id' valido\ndel producto a editar"); return; }
@@ -319,7 +321,7 @@ namespace EquipoDinamita
                 {
                     db.EliminarPantalla(Id_Producto);
                     dataGridView1.DataSource = db.MostrarPantallas();
-                    LimpiarTextBox() ;
+                    LimpiarTextBox();
                 }
                 else { MessageBox.Show("El 'Id' ingresado no existe\nIntente de nuevo"); return; }
             }
@@ -375,28 +377,32 @@ namespace EquipoDinamita
         }
 
 
+
+
+
+
         // -- aki solo alcanse hacer lo que es las validaciones para los datos resividos en los texbox y el bucle para ingresar por montones 
         private void BtnGenerarPedido_Click(object sender, EventArgs e)
         {
             string NumeroUNIDADES = TxbNumeroUnidades.Text.Trim();
-            if (!int.TryParse(NumeroUNIDADES, out int NumeroUnidades)) { MessageBox.Show("Ingrese Numero de Unidades para el pedido:");return; }
+            if (!int.TryParse(NumeroUNIDADES, out int NumeroUnidades)) { MessageBox.Show("Ingrese Numero de Unidades para el pedido:"); return; }
             string nombrePedido = TxbNombrePedido.Text.Trim();
-            if (string.IsNullOrWhiteSpace(nombrePedido)) { MessageBox.Show("Ingrese nombrePedido del pedido:");return; }
+            if (string.IsNullOrWhiteSpace(nombrePedido)) { MessageBox.Show("Ingrese nombrePedido del pedido:"); return; }
             string nombreEstereo = TxbNombreEstereoCP.Text.Trim();
             if (string.IsNullOrWhiteSpace(nombreEstereo)) { MessageBox.Show("Ingrese nombreEstere del pedido:"); return; }
             string idPantallat = TxbIdPantallaCP.Text.Trim();
-            if (!int.TryParse(idPantallat, out int idPantalla)) { MessageBox.Show("Ingrese Id Pantalla del pedido");return; }
+            if (!int.TryParse(idPantallat, out int idPantalla)) { MessageBox.Show("Ingrese Id Pantalla del pedido"); return; }
             string idTablillat = TxbIdTablillaCP.Text.Trim();
-            if (!int.TryParse(idTablillat, out int idTablilla)) { MessageBox.Show("Ingrese Id Tablilla del pedido");return; };
+            if (!int.TryParse(idTablillat, out int idTablilla)) { MessageBox.Show("Ingrese Id Tablilla del pedido"); return; };
             string idCarcasat = TxbIdCarcasaCP.Text.Trim();
-            if (!int.TryParse(idCarcasat, out int idCarcasa)) { MessageBox.Show("Ingrese Id Carcasa del pedido");return; };
+            if (!int.TryParse(idCarcasat, out int idCarcasa)) { MessageBox.Show("Ingrese Id Carcasa del pedido"); return; };
             string idBotonest = TxbIdBotonesCP.Text.Trim();
-            if (!int.TryParse(idBotonest, out int idBotones)) { MessageBox.Show("Ingrese Id Botones del producto");return; };
+            if (!int.TryParse(idBotonest, out int idBotones)) { MessageBox.Show("Ingrese Id Botones del producto"); return; };
 
-            if (!db.ValidarIDPantalla(idPantalla)) { MessageBox.Show("El ID de pantalla ingresado no existe intente de nuevo con otro");return; }
-            if (!db.ValidarIDTablilla(idTablilla)) { MessageBox.Show("El ID de tablilla ingresado no existe intente de nuevo con otro");return; }
-            if (!db.ValidarIDCarcasa(idCarcasa)) { MessageBox.Show("El Id de Carcasa ingresado no existe intente de nuevo con otro");return; }
-            if (!db.ValidarIDBotones(idBotones)) { MessageBox.Show("El ID de boton ingresado no existe intente de nuevo con otro");return; }
+            if (!db.ValidarIDPantalla(idPantalla)) { MessageBox.Show("El ID de pantalla ingresado no existe intente de nuevo con otro"); return; }
+            if (!db.ValidarIDTablilla(idTablilla)) { MessageBox.Show("El ID de tablilla ingresado no existe intente de nuevo con otro"); return; }
+            if (!db.ValidarIDCarcasa(idCarcasa)) { MessageBox.Show("El Id de Carcasa ingresado no existe intente de nuevo con otro"); return; }
+            if (!db.ValidarIDBotones(idBotones)) { MessageBox.Show("El ID de boton ingresado no existe intente de nuevo con otro"); return; }
 
             // ***************************************************************************************************************************
 
@@ -412,58 +418,94 @@ namespace EquipoDinamita
 
             if (ValorStockPantalla > NumeroUnidades)
             {
-                if (ValorStockTablilla > NumeroUnidades)
-                {
-                    if (ValorStockCarcasa > NumeroUnidades)
-                    {
-                        if (ValorStockBotones > NumeroUnidades)
-                        {
-                            if (db.GenerarPedido(nombrePedido, nombreEstereo, NumeroUnidades, idPantalla, idTablilla, idCarcasa, idBotones))
-                            {
-                                db.AlterarStockPantallaNegativo(idPantalla, NumeroUnidades);
-                                db.AlterarStockTablillaNegativo(idTablilla, NumeroUnidades);
-                                db.AlterarStockCarcasasNegativo(idCarcasa, NumeroUnidades);
-                                db.AlterarStockBotonesNegativo(idBotones, NumeroUnidades);
-                                int ValorStockPantallaCurrent = db.NumeroUnidadesDePantalla(idPantalla);
-                                int ValorStockTablillaCurrent = db.NumeroUnidadesDeTablilla(idTablilla);
-                                int ValorStockCarcasaCurrent = db.NumeroUnidadesDeCarcasa(idCarcasa);
-                                int ValorStockBotonesCurrent = db.NumeroUnidadesDeBotones(idBotones);
-
-                                if (ValorStockPantallaCurrent < 100)
-                                {
-                                    //AKIIIIII
-                                }
-                                if (ValorStockTablillaCurrent < 100)
-                                {
-                                    MessageBox.Show($"Revisar: Inventario De Tablillas Numero de Pz({ValorStockTablillaCurrent})");
-                                    //LabelAlerta.BackColor = Color.Red;
-                                    //LabelAlerta.Text = "Alerta REVISAR INVENTARIO: ¡¡¡Tablillas!!!";
-                                }
-                                if (ValorStockCarcasaCurrent < 100)
-                                {
-                                    MessageBox.Show($"Revisar: Inventario De Carcasas Numero de Pz({ValorStockCarcasaCurrent})");
-                                    //LabelAlerta.BackColor = Color.Red;
-                                    //LabelAlerta.Text = "Alerta REVISAR INVENTARIO: ¡¡¡Carcasas!!!";
-
-                                }
-                                if (ValorStockBotonesCurrent < 100)
-                                {
-                                    MessageBox.Show($"Revisar: Inventario De Botones Numero de Pz({ValorStockBotonesCurrent})");
-                                    //LabelAlerta.BackColor = Color.Red;
-                                    //LabelAlerta.Text = "Alerta REVISAR INVENTARIO: ¡¡¡Botones!!!";
-                                }
-
-                                MessageBox.Show("Pedido Generado Correctamente "); LimpiarTexBoxIDS();
-                            }
-                        }
-                        else { MessageBox.Show("Numero de Botones insuficientes\nRevisar Inventario"); return; }
-                    }
-                    else { MessageBox.Show("Numero de Carcasas insuficientes\nRevisar Inventario"); return; }
-                }
-                else { MessageBox.Show("Numero de Tablillas insuficientes\nRevisar Inventario"); return; }
+                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                $"El inventario de pantallas es insuficiente. " +
+                $"Stock actual: {ValorStockPantalla}. " +
+                $"Se requiere adquirir más material.");
+                MessageBox.Show("El inventario de pantallas es insuficiente. Se ha enviado un correo al área de compras.");
+                return;
             }
-            else { MessageBox.Show("Numero de pantallas insuficientes\nRevisar Inventario"); return; }
+            if (ValorStockTablilla > NumeroUnidades)
+            {
+                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                $"El inventario de tablillas es insuficiente." +
+                $" Stock actual: {ValorStockTablilla}." +
+                $" Se requiere adquirir más material.");
+                MessageBox.Show("El inventario de tablillas es insuficiente. Se ha enviado un correo al área de compras.");
+                return;
+            }
+            if (ValorStockCarcasa > NumeroUnidades)
+            {
+                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                $"El inventario de carcasas es insuficiente. " +
+                $"Stock actual: {ValorStockCarcasa}." +
+                $" Se requiere adquirir más material.");
+                MessageBox.Show("El inventario de carcasas es insuficiente. Se ha enviado un correo al área de compras.");
+                return;
+            }
 
+            if (ValorStockBotones > NumeroUnidades)
+            {
+                EnviarCorreo("vp40y20@gmail.com", "Aviso de material insuficiente",
+                $"El inventario de botones es insuficiente." +
+                $" Stock actual: {ValorStockBotones}. " +
+                $"Se requiere adquirir más material");
+                MessageBox.Show("El inventario de botones es insuficiente. Se ha enviado un correo al área de compras.");
+                return;
+            }
+            if (db.GenerarPedido(nombrePedido, nombreEstereo, NumeroUnidades, idPantalla, idTablilla, idCarcasa, idBotones))
+            {
+                db.AlterarStockPantallaNegativo(idPantalla, NumeroUnidades);
+                db.AlterarStockTablillaNegativo(idTablilla, NumeroUnidades);
+                db.AlterarStockCarcasasNegativo(idCarcasa, NumeroUnidades);
+                db.AlterarStockBotonesNegativo(idBotones, NumeroUnidades);
+
+                MessageBox.Show("Pedido Generado Correctamente ");
+                LimpiarTexBoxIDS();
+
+
+            }
         }
+
+        // Método para enviar correos
+        private void EnviarCorreo(string destinatario, string asunto, string cuerpo)
+        {
+
+            try
+            {
+                // Configuración del cliente SMTP
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    Credentials = new NetworkCredential("dianaerangel12@gmail.com", "dbsj blku sxvx likk"),
+                    EnableSsl = true // Asegura la conexión
+                };
+
+                // Crear el mensaje de correo
+                MailMessage mensaje = new MailMessage
+                {
+                    From = new MailAddress("dianaerangel12@gmail.com"),
+                    Subject = asunto,
+                    Body = cuerpo,
+                    IsBodyHtml = true // Si el cuerpo contiene HTML
+                };
+
+                // Agregar el destinatario
+                mensaje.To.Add(destinatario);
+
+                // Enviar el correo
+                smtpClient.Send(mensaje);
+
+                // Confirmación
+                MessageBox.Show("Correo enviado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+
+                MessageBox.Show($"Error al enviar el correo: {ex.Message}\nDetalles: {ex.InnerException?.Message}");
+            }
+        
+        }
+
     }
 }
