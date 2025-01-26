@@ -437,7 +437,7 @@ namespace EquipoDinamita
 
                                 if (ValorStockPantall < 300)// condicion de limite permitido antes de avisar que ya ocupamos encargar mas 
                                 {
-                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                    EnviarCorreo("dianaerangel12@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
                                         $"El inventario de pantallas esta por terminarse. " +
                                         $"Stock actual: {ValorStockPantall}. " + // esta es la variable mas actualisada del stoc
                                         $"Se requiere adquirir más material.");
@@ -553,9 +553,9 @@ namespace EquipoDinamita
         
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Application.Exit();
         }
     }
 }
