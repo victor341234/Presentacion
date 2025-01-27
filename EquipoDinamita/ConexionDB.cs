@@ -19,7 +19,7 @@ namespace EquipoDinamita
 
         public static MySqlConnection crearconexion()
         {
-            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=Di4n4ran;";
+            string cadenaConexion = "server=localhost;port=3306;database=Estero;user id=root;password=root;";
             return new MySqlConnection(cadenaConexion);
         }
         // ***************************VALIDACIONES NOMBRE**************************************

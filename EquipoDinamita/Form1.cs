@@ -437,10 +437,10 @@ namespace EquipoDinamita
 
                                 if (ValorStockPantall < 300)// condicion de limite permitido antes de avisar que ya ocupamos encargar mas 
                                 {
-                                    EnviarCorreo("dianaerangel12@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
-                                        $"El inventario de pantallas esta por terminarse. " +
-                                        $"Stock actual: {ValorStockPantall}. " + // esta es la variable mas actualisada del stoc
-                                        $"Se requiere adquirir más material.");
+                                    EnviarCorreo("vp40y20@gmail.com", "Aviso preventivo de material ",// volvi a usar tu metodo para el correo solo cambie el mensaje 
+                                    $"El inventario de pantallas esta por terminarse. " +
+                                    $"Stock actual: {ValorStockPantall}. " + // esta es la variable mas actualisada del stoc
+                                    $"Se requiere adquirir más material.");
                                     MessageBox.Show("Alerta de inventario. Se ha enviado un correo al área de compras.");
                                 }
                                 if (ValorStockTablill < 300)
